@@ -1,3 +1,3 @@
-FROM 10.2.131.56/library/tomcat
+FROM tomcat
 
 COPY ./cas /usr/local/tomcat/webapps/cas
