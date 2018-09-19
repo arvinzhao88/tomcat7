@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd"
+       default-lazy-init="false">
+    <description>数据库相关配置，包括Druid连接池，Mybatis</description>
+    <bean id="dataSource"
+          class="com.mchange.v2.c3p0.ComboPooledDataSource"
+          destroy-method="close">
+        <property name="driverClass">
+            <value>${datasource.driverClassName}</value>
+        </property>
+        <property name="jdbcUrl">
+            <value>${datasource.url}</value>
+        </property>
+        <property name="user">
+            <value>${datasource.username}</value>
+        </property>
+        <property name="password">
+            <value>${datasource.password}</value>
+        </property>
+        <property name="acquireIncrement">
+            <value>${c3p0.acquireIncrement}</value>
+        </property>
+        <property name="initialPoolSize">
+            <value>${c3p0.initialPoolSize}</value>
+        </property>
+        <property name="minPoolSize">
+            <value>${c3p0.minPoolSize}</value>
+        </property>
+        <property name="maxPoolSize">
+            <value>${c3p0.maxPoolSize}</value>
+        </property>
+        <property name="maxIdleTime">
+            <value>${c3p0.maxIdleTime}</value>
+        </property>
+        <property name="idleConnectionTestPeriod">
+            <value>${c3p0.idleConnectionTestPeriod}</value>
+        </property>
+        <property name="maxStatements">
+            <value>${c3p0.maxStatements}</value>
+        </property>
+        <property name="numHelperThreads">
+            <value>${c3p0.numHelperThreads}</value>
+        </property>
+    </bean>
+
+    <bean id="dataSourceJdbc"
+          class="com.mchange.v2.c3p0.ComboPooledDataSource"
+          destroy-method="close">
+        <property name="driverClass">
+            <value>${datasource.driverClassName}</value>
+        </property>
+        <property name="jdbcUrl">
+            <value>${datasource.url}</value>
+        </property>
+        <property name="user">
+            <value>${datasource.username}</value>
+        </property>
+        <property name="password">
+            <value>${datasource.password}</value>
+        </property>
+        <property name="acquireIncrement">
+            <value>${c3p0.acquireIncrement}</value>
+        </property>
+        <property name="initialPoolSize">
+            <value>${c3p0.initialPoolSize}</value>
+        </property>
+        <property name="minPoolSize">
+            <value>${c3p0.minPoolSize}</value>
+        </property>
+        <property name="maxPoolSize">
+            <value>${c3p0.maxPoolSize}</value>
+        </property>
+        <property name="maxIdleTime">
+            <value>${c3p0.maxIdleTime}</value>
+        </property>
+        <property name="idleConnectionTestPeriod">
+            <value>${c3p0.idleConnectionTestPeriod}</value>
+        </property>
+        <property name="maxStatements">
+            <value>${c3p0.maxStatements}</value>
+        </property>
+        <property name="numHelperThreads">
+            <value>${c3p0.numHelperThreads}</value>
+        </property>
+    </bean>
+    <!-- 配置mybatis -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <!--<property name="configLocation" value="classpath:mybatis/oracle/mybatis-config.xml"></property>-->
+        <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"></property>
+        <property name="typeAliasesPackage" value="com.gotop.cas.*.po"/>
+        <!-- mapper扫描 -->
+        <property name="mapperLocations">
+            <array>
+                <value>classpath*:mybatis/**/*Mapper.xml</value>
+            </array>
+        </property>
+    </bean>
+
+    <!-- 扫描DAO -->
+    <bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.gotop.cas.*.mapper"/>
+        <property name="properties">
+            <value>
+                <!--通用Mapper接口-->
+                mappers=tk.mybatis.mapper.common.Mapper
+            </value>
+        </property>
+    </bean>
+
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceJdbc" />
+    </bean>
+</beans>
